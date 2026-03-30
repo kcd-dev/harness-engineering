@@ -122,6 +122,10 @@ These benchmarks are especially useful when you want to compare harness quality,
 - [AgentKit](https://github.com/inngest/agent-kit) - Inngest's TypeScript toolkit for building durable, workflow-aware agents on top of event-driven infrastructure.
 - [Harbor](https://github.com/harbor-framework/harbor) - A generalized harness for evaluating and improving agents at scale, released alongside Terminal-Bench 2.0.
 
+## TCD Fusion
+
+- [TCD × Harness Engineering 融合方案](./TCD_FUSION_PLAN.md) - 将本仓库中的高价值 harness engineering 资料沉淀为 TCD 可执行模板、验收层、工作流编排与 benchmark adapter。
+
 ## Contributing
 
 Contributions are welcome. Please prefer resources that are:
