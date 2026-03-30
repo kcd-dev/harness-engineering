@@ -4,7 +4,7 @@
 
 这份文档不是在讨论“要不要 fork 一个 awesome list”，而是在明确一件更现实的事：
 
-> **如何把 `awesome-harness-engineering` 这个上游研究仓，升级成 TCD 体系里的可执行工程资产入口。**
+> **如何把 `harness-engineering` 这个上游研究仓，升级成 TCD 体系里的可执行工程资产入口。**
 
 当前仓库已经完成了一件事：
 - 它把 harness engineering 相关资料按主题做了高质量聚合；
@@ -73,7 +73,7 @@
 
 ### 3.1 两者关注的问题是同一类问题
 
-`awesome-harness-engineering` 讨论的是：
+`harness-engineering` 讨论的是：
 - 如何给 AI Agent 提供稳定上下文；
 - 如何约束 Agent 行为；
 - 如何让多步任务不中途漂移；
@@ -104,7 +104,7 @@ TCD 的优势：
 
 所以最优关系不是二选一，而是：
 
-- `awesome-harness-engineering` 做 **输入**；
+- `harness-engineering` 做 **输入**；
 - TCD 做 **转译和落地**；
 - 最终形成自己的执行系统。
 
@@ -665,7 +665,7 @@ TCD 的优势从来不是“框架最全”，而是：
 为了让这个方案不是停留在纸面上，建议后续按以下方向扩展当前仓库：
 
 ```text
-awesome-harness-engineering/
+harness-engineering/
 ├── README.md
 ├── TCD_FUSION_PLAN.md
 ├── assets/

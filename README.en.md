@@ -1,4 +1,4 @@
-# Awesome Harness Engineering [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+# harness-engineering [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
 > A curated list of articles, playbooks, benchmarks, specifications, and open-source projects for harness engineering: the practice of shaping the environment around AI agents so they can work reliably.
 

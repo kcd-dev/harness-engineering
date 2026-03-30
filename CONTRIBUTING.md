@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve Awesome Harness Engineering.
+Thanks for helping improve harness-engineering.
 
 ## What belongs here
 

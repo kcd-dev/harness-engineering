@@ -1,4 +1,4 @@
-# Awesome Harness Engineering 中文说明
+# harness-engineering 中文说明
 
 > 一个面向 **Harness Engineering（AI Agent 运行编排工程）** 的高质量资料仓，聚焦如何让 Agent 在真实任务中更稳定、更可控、更可验收，而不是只会在单轮对话里“看起来很聪明”。
 
@@ -6,7 +6,7 @@
 
 ## 1. 这是什么
 
-`awesome-harness-engineering` 不是一个泛 AI 链接收藏夹，也不是普通的“Agent 工具大全”。
+`harness-engineering` 不是一个泛 AI 链接收藏夹，也不是普通的“Agent 工具大全”。
 
 它关注的是一个更窄、但真正决定 Agent 能否落地的问题：
 
