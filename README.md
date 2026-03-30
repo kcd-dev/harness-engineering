@@ -124,6 +124,7 @@ These benchmarks are especially useful when you want to compare harness quality,
 
 ## TCD Fusion
 
+- [中文说明](./README.zh-CN.md) - 面向中文读者的仓库定位、分区解释、使用方式与 TCD 关系说明。
 - [TCD × Harness Engineering 融合方案](./TCD_FUSION_PLAN.md) - 将本仓库中的高价值 harness engineering 资料沉淀为 TCD 可执行模板、验收层、工作流编排与 benchmark adapter。
 
 ## Contributing
