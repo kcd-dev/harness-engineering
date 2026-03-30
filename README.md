@@ -1,144 +1,379 @@
-# Awesome Harness Engineering [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+# Awesome Harness Engineering 中文说明
 
-> A curated list of articles, playbooks, benchmarks, specifications, and open-source projects for harness engineering: the practice of shaping the environment around AI agents so they can work reliably.
+> 一个面向 **Harness Engineering（AI Agent 运行编排工程）** 的高质量资料仓，聚焦如何让 Agent 在真实任务中更稳定、更可控、更可验收，而不是只会在单轮对话里“看起来很聪明”。
 
-Harness engineering sits at the intersection of context engineering, evaluation, observability, orchestration, safe autonomy, and software architecture. This list focuses on resources that make agents more dependable in real workflows, especially long-running coding and research tasks.
+---
 
-Generic agent tooling is out of scope unless the page directly covers harness design, context management, evaluation, runtime control, or other reliability-critical harness primitives.
+## 1. 这是什么
 
-## Contents
+`awesome-harness-engineering` 不是一个泛 AI 链接收藏夹，也不是普通的“Agent 工具大全”。
 
-- [Foundations](#foundations)
-- [Context, Memory & Working State](#context-memory--working-state)
-- [Constraints, Guardrails & Safe Autonomy](#constraints-guardrails--safe-autonomy)
-- [Specs, Agent Files & Workflow Design](#specs-agent-files--workflow-design)
-- [Evals & Observability](#evals--observability)
-- [Benchmarks](#benchmarks)
-- [Runtimes, Harnesses & Reference Implementations](#runtimes-harnesses--reference-implementations)
-- [Contributing](#contributing)
-- [License](#license)
+它关注的是一个更窄、但真正决定 Agent 能否落地的问题：
 
-## Foundations
+> **如何给 AI Agent 搭建一套可靠的运行环境（Harness），让它在真实项目里能持续工作，而不是做几轮对话就漂。**
 
-- [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/) - OpenAI's flagship field report on building a large application with Codex using architectural constraints, repo-local instructions, browser validation, and telemetry.
-- [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) - Anthropic's core article on initializer agents, feature lists, `init.sh`, self-verification, and handoff artifacts across many context windows.
-- [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps) - Anthropic follow-up focused on improving long-running app generation with better task state and evaluator design.
-- [The Anatomy of an Agent Harness](https://blog.langchain.com/the-anatomy-of-an-agent-harness/) - LangChain's concise framing of an agent as model plus harness, with prompts, tools, middleware, orchestration, and runtime infrastructure.
-- [Harness Engineering](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html) - Thoughtworks' framing of harness work into context engineering, architectural constraints, and "garbage collection" against entropy.
-- [Building effective agents](https://www.anthropic.com/engineering/building-effective-agents) - Anthropic's broader guide to workflows, agents, tools, and when structured systems outperform raw prompting.
-- [Skill Issue: Harness Engineering for Coding Agents](https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents) - A practical argument that weak results from coding agents are often harness problems rather than model problems.
-- [Your Agent Needs a Harness, Not a Framework](https://www.inngest.com/blog/your-agent-needs-a-harness-not-a-framework) - Inngest's case for treating state, retries, traces, and concurrency as first-class infrastructure.
+这里收录的内容主要包括：
+- 方法论文章
+- 上下文工程实践
+- 约束与安全控制
+- AGENTS / Spec / Workflow 设计规范
+- Evals 与 Observability
+- Benchmarks
+- 运行时 / Harness / 开源实现
 
-## Context, Memory & Working State
+你可以把它理解成：
 
-- [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) - Anthropic's guidance on managing the context window as a working memory budget rather than a dumping ground.
-- [Context Engineering for AI Agents: Lessons from Building Manus](https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus) - Manus' detailed playbook on KV-cache locality, tool masking, filesystem memory, and keeping useful failures in-context.
-- [Context Engineering for Coding Agents](https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html) - Thoughtworks guidance on shaping the task environment so coding agents can stay grounded and productive.
-- [Advanced Context Engineering for Coding Agents](https://www.humanlayer.dev/blog/advanced-context-engineering) - HumanLayer patterns for reducing context drift and making coding sessions easier to resume.
-- [Context-Efficient Backpressure for Coding Agents](https://www.humanlayer.dev/blog/context-efficient-backpressure) - HumanLayer's ideas for preventing agents from burning context on noisy or low-value work.
-- [Writing a good CLAUDE.md](https://www.humanlayer.dev/blog/writing-a-good-claude-md) - A practical guide to creating durable, repo-local instructions that agents can repeatedly follow.
+> **研究“怎么把 AI 从会聊天，变成能交付”的资料地图。**
 
-## Constraints, Guardrails & Safe Autonomy
+---
 
-- [Beyond permission prompts: making Claude Code more secure and autonomous](https://www.anthropic.com/engineering/claude-code-sandboxing) - Anthropic on reducing approval friction without losing control through better sandboxing and policy design.
-- [Code execution with MCP: building more efficient agents](https://www.anthropic.com/engineering/code-execution-with-mcp) - Anthropic's approach to giving agents controlled execution power through explicit, inspectable tool boundaries.
-- [Writing effective tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents) - Anthropic's guidance on tool interfaces that are easier for models to call correctly and safely.
-- [Assessing internal quality while coding with an agent](https://martinfowler.com/articles/exploring-gen-ai/ccmenu-quality.html) - Thoughtworks on moving quality checks into the loop instead of relying on after-the-fact manual review.
-- [Anchoring AI to a reference application](https://martinfowler.com/articles/exploring-gen-ai/anchoring-to-reference.html) - Thoughtworks on constraining agents with concrete exemplars so they produce more consistent output.
-- [Humans and Agents in Software Engineering Loops](https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html) - A clear mental model for where humans should strengthen the harness instead of micromanaging every artifact.
-- [Claude Code: Best practices for agentic coding](https://code.claude.com/docs) - Anthropic's practical recommendations for repo structure, checkpoints, validation, and delegation in agentic coding workflows.
+## 2. 什么是 Harness Engineering
 
-## Specs, Agent Files & Workflow Design
+很多人讨论 AI Agent 时，重点都放在：
+- 模型强不强
+- Prompt 写得好不好
+- 工具调得顺不顺
 
-- [AGENTS.md](https://github.com/agentsmd/agents.md) - A lightweight open format for repo-local instructions that tell agents how to work inside a codebase.
-- [agent.md](https://github.com/agentmd/agent.md) - A related standardization effort for machine-readable agent instructions across projects and tools.
-- [GitHub Spec Kit](https://github.com/github/spec-kit) - GitHub's toolkit for spec-driven development, useful when you want agents to execute against explicit product and engineering specs.
-- [Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) - Thoughtworks on why strong specs make AI-assisted software delivery more dependable.
-- [12 Factor Agents](https://www.humanlayer.dev/blog/12-factor-agents) - HumanLayer's operating principles for production agents, including explicit prompts, state ownership, and clean pause-resume behavior.
-- [12-Factor AgentOps](https://www.12factoragentops.com/) - An operations-oriented companion focused on context discipline, validation, and reproducible agent workflows.
+但真正把 Agent 用进项目后，很快会撞到一堆更现实的问题：
+- 上下文太长，任务做一半忘了前文；
+- 多步骤任务中途漂移，越做越偏；
+- 同样一个任务，这次能成，下次就翻车；
+- 看起来执行了很多步骤，但没有真实验收；
+- 失败之后没有 trace、没有分类、没有回放依据；
+- 多 agent 协作时，职责不清、交接混乱；
+- 脚本、配置、权限、环境这些“非模型问题”，反而成了真实瓶颈。
 
-## Evals & Observability
+Harness Engineering 处理的就是这些问题。
 
-- [Testing Agent Skills Systematically with Evals](https://developers.openai.com/blog/eval-skills/) - OpenAI's concrete guide to turning agent traces into repeatable evals with JSONL logs and deterministic checks.
-- [Agent evals](https://platform.openai.com/docs/guides/agent-evals) - OpenAI's product guide for measuring agent quality with reproducible task-level and workflow-level evaluations.
-- [Evaluation best practices](https://platform.openai.com/docs/guides/evaluation-best-practices) - OpenAI's general guide to building eval suites that match real-world distributions and catch regressions early.
-- [Trace grading](https://platform.openai.com/docs/guides/trace-grading) - OpenAI documentation on grading agent traces directly, which is especially helpful for long multi-step tasks.
-- [Demystifying Evals for AI Agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) - Anthropic's guidance on what to measure when agents have many possible trajectories to success or failure.
-- [Quantifying infrastructure noise in agentic coding evals](https://www.anthropic.com/engineering/infrastructure-noise) - Anthropic on how runtime configuration can move coding benchmark scores by more than many leaderboard gaps.
-- [Evaluating Deep Agents: Our Learnings](https://blog.langchain.com/evaluating-deep-agents-our-learnings/) - LangChain's practical breakdown of single-step, full-run, and multi-turn eval design for stateful agents.
-- [Improving Deep Agents with harness engineering](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/) - LangChain's evidence that harness changes alone can significantly improve benchmark performance.
+它不是在问：
+- “模型还能不能再强一点？”
 
-## Benchmarks
+而是在问：
+- “即便模型能力有波动，系统怎么设计才能稳定交付？”
 
-These benchmarks are especially useful when you want to compare harness quality, not just model quality. They stress context handling, tool calling, environment control, verification logic, and the runtime scaffolding around the model.
+所以它更接近软件工程，而不是提示词技巧。
 
-- [Agent Arena](https://www.agent-arena.com/leaderboard) - A leaderboard that ranks AI agents, models, tools, and frameworks using ELO-style ratings from head-to-head battles, providing a structured way to compare harness-level choices across categories.
-- [AgentBench](https://github.com/THUDM/AgentBench) - A cross-environment benchmark spanning OS, databases, knowledge graphs, web browsing, and more, useful for seeing whether a harness generalizes beyond one narrow task loop.
-- [AgentBoard](https://github.com/HKUST-NLP/AgentBoard) - A benchmark for multi-turn LLM agents complemented by an analytical evaluation board for assessing model performance beyond final success rates, making partial-progress and trajectory quality visible.
-- [AgentStudio](https://github.com/SkyworkAI/agent-studio) - An integrated benchmark suite with realistic environments and comprehensive toolkits for evaluating virtual agents on real computer software, useful for measuring harness depth against a broad task surface.
-- [AppWorld](https://appworld.dev/) - A controllable world of apps and people for benchmarking interactive coding agents, with state-based and execution-based unit tests that surface harness quality around planning, code generation, and collateral-damage control.
-- [AssistantBench](https://github.com/oriyor/AssistantBench) - A benchmark that evaluates web agents on realistic, time-consuming research tasks requiring multi-step tool use and information synthesis, making it a good proxy for harness quality in long-horizon web scenarios.
-- [BrowseComp](https://www.kaggle.com/benchmarks/openai/browsecomp) - A benchmark that evaluates AI agents on locating hard-to-find information, stressing search strategy, context management, and retrieval harness design under difficult conditions.
-- [BrowserGym Leaderboard](https://huggingface.co/spaces/ServiceNow/browsergym-leaderboard) - A gym environment and leaderboard for evaluating LLMs, VLMs, and agents on web navigation tasks, offering a reproducible framework for comparing harnesses across multiple web benchmarks in one place.
-- [CharacterEval](https://github.com/morecry/CharacterEval) - A benchmark for evaluating role-playing conversational agents using multi-turn dialogues and character profiles, with metrics across four dimensions including character fidelity and conversational coherence.
-- [ClawBench](https://clawbench.net) - A benchmark that evaluates AI agents across search, reasoning, coding, safety, and multi-turn conversation tasks, covering the breadth of harness demands in a single suite.
-- [ClawWork](https://github.com/HKUDS/ClawWork) - A real-world economic benchmark where AI agents complete professional tasks spanning 44 occupations, earning income while managing token costs and economic solvency, making it a direct test of harness efficiency under resource constraints.
-- [Computer Agent Arena](https://github.com/xlang-ai/computer-agent-arena) - An open evaluation platform where users compare LLM/VLM-based agents on real-world computer tasks ranging from general computer use to coding, data analysis, and video editing, surfacing harness differences across a wide task surface.
-- [GAIA](https://huggingface.co/datasets/gaia-benchmark/GAIA) - A benchmark for general AI assistants that is often used to compare harness-level choices around tools, planning, verification, and long-horizon autonomy.
-- [Galileo Agent Leaderboard](https://huggingface.co/spaces/galileo-ai/agent-leaderboard) - An open evaluation platform tracking LLM agents on task completion and tool calling across business domains, useful for comparing harness quality in enterprise-grade agentic scenarios.
-- [GTA](https://github.com/open-compass/GTA) - A benchmark that evaluates the tool-use capability of LLM-based agents using human-written queries, real deployed tools, and authentic multimodal inputs, exposing harness gaps between isolated testing and real deployment.
-- [HAL: Holistic Agent Leaderboard](https://hal.cs.princeton.edu/) - A benchmark and leaderboard for agent systems with attention to reliability, cost, and broad task coverage, making it useful for comparing end-to-end harness behavior.
-- [Introducing Terminal-Bench 2.0 and Harbor](https://www.tbench.ai/news/announcement-2-0) - The Terminal-Bench 2.0 announcement, useful for understanding the harder tasks and generalized evaluation harness behind Harbor.
-- [LeetCode-Hard Gym](https://github.com/GammaTauAI/leetcode-hard-gym) - An RL environment interface to LeetCode's submission server for evaluating codegen agents, giving harnesses direct access to execution-based feedback on hard algorithmic problems.
-- [LLM Colosseum Leaderboard](https://github.com/OpenGenerativeAI/llm-colosseum) - A platform that evaluates LLMs by having them fight in Street Fighter III, testing speed, adaptability, and real-time decision-making as proxies for harness responsiveness under tight latency constraints.
-- [MAgIC](https://zhiyuanhubj.github.io/MAgIC/) - A benchmark measuring cognition, adaptability, rationality, and collaboration of LLMs in multi-agent systems, useful for evaluating how harnesses coordinate agent interactions and shared state.
-- [MCP Bench](https://github.com/modelscope/MCPBench) - A benchmark for evaluating AI models on MCP server interactions, measuring tool accuracy, latency, and token use across server types, which directly reflects harness design choices around MCP integration.
-- [MCP Universe](https://mcp-universe.github.io/) - A leaderboard comparing AI model performance on MCP tasks, tracking how different models and harness configurations handle tool-augmented agent workflows.
-- [MCPMark](https://github.com/eval-sys/mcpmark) - A stress-testing benchmark for model and agent capabilities in real-world MCP tasks across tools like Notion, GitHub, and Postgres, making harness MCP integration quality directly measurable.
-- [Olas Predict Benchmark](https://github.com/valory-xyz/olas-predict-benchmark) - A benchmark for evaluating agents on historical prediction market data, testing harness design for research, retrieval, and forecasting in long-horizon reasoning tasks.
-- [OSWorld](https://os-world.github.io/) - A real computer-use benchmark with 369 tasks across Ubuntu, Windows, and macOS, complete with initial-state setup and execution-based evaluators, making it excellent for testing desktop and multimodal harnesses.
-- [OSWorld-MCP](https://osworld-mcp.github.io) - An extension of OSWorld that evaluates AI agents on real-world computer tasks using the Model Context Protocol, making it useful for comparing MCP-enabled harnesses on a realistic desktop task suite.
-- [SEC-bench](https://github.com/SEC-bench/SEC-bench) - A benchmark for evaluating LLM agents on real-world software security tasks including vulnerability reproduction and patching, stressing harness design around code execution, containerized environments, and security-aware tooling.
-- [SWE-bench Verified](https://www.swebench.com/) - A strong benchmark for software engineering agents working against real GitHub issues and tests, which makes harness choices around retrieval, patching, and validation highly visible.
-- [τ-Bench](https://github.com/sierra-research/tau-bench) - A benchmark that emulates dynamic conversations between a simulated user and a language agent equipped with domain-specific API tools and policy guidelines, making it useful for evaluating harnesses built around structured tool use and policy enforcement.
-- [tau2-bench](https://github.com/sierra-research/tau2-bench) - A benchmark for realistic, multi-step agent tasks where success depends on tool use and execution quality rather than a single-shot answer.
-- [Terminal-Bench](https://www.tbench.ai/) - A benchmark suite for terminal-native agents operating in shells, filesystems, and verification-heavy environments, which is especially useful for comparing coding-agent harnesses.
-- [TravelPlanner](https://github.com/OSU-NLP-Group/TravelPlanner) - A benchmark for evaluating LLM agents on tool use and complex planning within multiple constraints, revealing how harness design handles multi-constraint satisfaction and long-horizon planning.
-- [VAB](https://github.com/THUDM/VisualAgentBench) - VisualAgentBench evaluates large multimodal models as visual foundation agents across embodied, GUI, and visual design tasks, useful for comparing harnesses on visually grounded, multi-step agent workflows.
-- [VisualWebArena](https://jykoh.com/vwa) - A benchmark for multimodal web agents on realistic visually grounded tasks, extending WebArena with image and screenshot inputs that stress harness support for visual context in browser environments.
-- [WebArena](https://webarena.dev/) - A standalone, self-hostable web environment for evaluating autonomous agents on realistic tasks, making it a reproducible baseline for comparing web-facing harness designs.
-- [WebArena-Verified](https://github.com/ServiceNow/webarena-verified) - A verified web-agent benchmark with curated tasks and deterministic evaluators over agent responses and captured network traces, making it a good fit for measuring web-facing harnesses.
-- [WildClawBench](https://github.com/InternLM/WildClawBench) - An in-the-wild benchmark running agents inside a live OpenClaw environment on 60 original tasks including multimodal, long-horizon, and safety-critical scenarios, making harness robustness under real-world conditions directly visible.
-- [WorkArena](https://github.com/ServiceNow/WorkArena) - A benchmark for browser agents on common knowledge-work tasks, useful for comparing harnesses on realistic enterprise-style web workflows instead of toy browser tasks.
+---
 
-## Runtimes, Harnesses & Reference Implementations
+## 3. 这个仓库的价值在哪里
 
-- [Agent Frameworks, Runtimes, and Harnesses, Oh My!](https://blog.langchain.com/agent-frameworks-runtimes-and-harnesses-oh-my/) - LangChain's decomposition of what belongs in a framework, a runtime, and a harness.
-- [Building agents with the Claude Agent SDK](https://claude.com/blog/building-agents-with-the-claude-agent-sdk) - Anthropic's guide to a production-oriented agent SDK with sessions, tools, and orchestration support.
-- [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) - Anthropic's architecture write-up for a multi-agent system with separation of roles and structured coordination.
-- [deepagents](https://github.com/langchain-ai/deepagents) - LangChain's open-source project for building deeper, longer-running agents with middleware and harness patterns.
-- [SWE-agent](https://github.com/SWE-agent/SWE-agent) - A mature research coding agent that makes the harness, prompt, tools, and environment design directly inspectable.
-- [SWE-ReX](https://github.com/SWE-agent/SWE-ReX) - Sandboxed code execution infrastructure for AI agents, useful when harness work starts to merge into execution runtime design.
-- [AgentKit](https://github.com/inngest/agent-kit) - Inngest's TypeScript toolkit for building durable, workflow-aware agents on top of event-driven infrastructure.
-- [Harbor](https://github.com/harbor-framework/harbor) - A generalized harness for evaluating and improving agents at scale, released alongside Terminal-Bench 2.0.
+这个仓库最有价值的地方，不是它“收了很多链接”。
 
-## TCD Fusion
+真正值钱的是它把 harness engineering 拆成了几层清晰的问题域：
+- Foundations
+- Context / Memory / Working State
+- Constraints / Guardrails / Safe Autonomy
+- Specs / Agent Files / Workflow Design
+- Evals / Observability
+- Benchmarks
+- Runtimes / Harnesses / Reference Implementations
 
-- [中文说明](./README.zh-CN.md) - 面向中文读者的仓库定位、分区解释、使用方式与 TCD 关系说明。
-- [TCD × Harness Engineering 融合方案](./TCD_FUSION_PLAN.md) - 将本仓库中的高价值 harness engineering 资料沉淀为 TCD 可执行模板、验收层、工作流编排与 benchmark adapter。
+这意味着它不是杂乱堆资料，而是在构建一张问题地图：
 
-## Contributing
+- 你如果想解决“上下文漂移”，该去看哪一类内容；
+- 你如果想解决“任务验收不稳定”，该看哪一类内容；
+- 你如果想搭建自己的 runtime / harness，该看哪类开源实现；
+- 你如果想做 benchmark 对照实验，该从哪几套基线开始。
 
-Contributions are welcome. Please prefer resources that are:
+这类结构化资料仓，很适合作为：
+- 团队研究入口；
+- 方法论归档入口；
+- 模板和标准抽取入口；
+- 后续工程资产沉淀的上游输入层。
 
-- Specific about how agents are constrained, evaluated, resumed, observed, or orchestrated
-- Original implementations, primary-source articles, or high-signal technical write-ups
-- Useful to practitioners building real harnesses instead of generic AI commentary
+---
 
-If two links say the same thing, prefer the more primary, practical, and implementation-oriented one.
+## 4. 当前内容分区怎么理解
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines and the preferred entry format.
+### 4.1 Foundations
 
-## License
+这一部分主要回答：
+- Harness engineering 是什么；
+- 它和 context engineering、agent runtime、agent ops 的关系是什么；
+- 为什么很多 Agent 失败，其实不是模型问题，而是 harness 问题。
 
-[CC0 1.0](./LICENSE)
+适合：
+- 第一次接触这个概念；
+- 需要统一团队认知；
+- 需要给别人解释“为什么不能只靠 prompt”。
+
+### 4.2 Context, Memory & Working State
+
+这一部分主要讨论：
+- 如何管理上下文窗口；
+- 如何保留长期任务状态；
+- 如何把失败经验、文件系统状态、工作记忆组织好；
+- 如何减少上下文污染和无效 token 消耗。
+
+这部分特别关键，因为很多 agent 在长任务里失控，本质都是上下文管理失败。
+
+### 4.3 Constraints, Guardrails & Safe Autonomy
+
+这一部分重点是：
+- 权限控制
+- 工具边界
+- 自动化执行时的安全收口
+- 如何减少人工审批但不丢控制力
+
+适合：
+- 正在做生产环境 agent；
+- 要求可审计、可限制、可回滚；
+- 需要设计“能自动执行，但不能乱执行”的系统。
+
+### 4.4 Specs, Agent Files & Workflow Design
+
+这一部分关注：
+- AGENTS.md / agent.md 这类仓库级说明文件；
+- Spec 驱动开发；
+- 工作流与任务结构设计；
+- 如何让 agent 不是“想到哪做到哪”，而是沿着明确结构工作。
+
+这是最容易直接转成团队工程规范的一层。
+
+### 4.5 Evals & Observability
+
+这一部分是把“我觉得它做得不错”变成“它真的做得不错”的关键。
+
+它解决的是：
+- 怎么定义成功；
+- 怎么看 trace；
+- 怎么做任务级评测；
+- 怎么发现 regressions；
+- 怎么区分偶然成功和稳定成功。
+
+如果没有这层，任何 Agent 项目都会停留在“演示还不错”的阶段。
+
+### 4.6 Benchmarks
+
+这一部分收录了大量与 Agent 可靠性相关的 benchmark。
+
+重点不是为了追榜，而是为了：
+- 做对照实验；
+- 看不同 harness 结构的差异；
+- 找到更接近真实任务的验证环境；
+- 建立自己的基线。
+
+### 4.7 Runtimes, Harnesses & Reference Implementations
+
+这一部分更偏实现层，回答的是：
+- 别人是怎么搭 runtime 的；
+- session、tool、workflow、agent orchestration 怎么组织；
+- 有哪些开源项目值得拆解学习。
+
+适合：
+- 打算自己做运行时；
+- 想看成熟参考实现；
+- 想把理念真正变成系统。
+
+---
+
+## 5. 这个仓库不做什么
+
+为了避免误解，这里要说清楚边界。
+
+这个仓库**不追求**：
+- 泛 AI 工具导航
+- 纯模型资讯汇总
+- 新闻式热点跟踪
+- 大而全的 agent framework 对比网站
+- “什么都收一点”的资源站
+
+只有当一篇内容和下面这些问题直接相关时，才应该收：
+- harness 设计
+- context 管理
+- task state / workflow state
+- 运行控制
+- eval / observability
+- safe autonomy
+- runtime / orchestration
+- 长任务可靠性
+
+这个边界非常重要。
+
+因为一旦边界松掉，仓库很快会退化成普通 AI 收藏夹，失去现在最值钱的“问题聚焦度”。
+
+---
+
+## 6. 谁适合看这个仓库
+
+这个仓库最适合下面几类人：
+
+### 6.1 正在做 Coding Agent / Research Agent 的人
+如果你已经在真实项目里用 Agent，而不是只在聊天窗口里试试玩，这个仓库会很有价值。
+
+### 6.2 正在搭建 Agent 平台 / Agent Runtime 的人
+你需要的不是“再换一个模型”，而是：
+- session 怎么保存
+- context 怎么组织
+- tools 怎么约束
+- eval 怎么做
+- workflow 怎么设计
+
+### 6.3 想把 AI 工作流工程化的团队
+当团队规模变大后，prompt 已经不够了，真正需要的是：
+- 标准化
+- 模板化
+- 可观测
+- 可交接
+- 可回归
+
+### 6.4 想把 TCD 往上游研究和下游工程打通的人
+如果你不是在做纯研究，而是想把外部高价值方法论转成自己团队的资产，这个仓库特别合适做上游输入层。
+
+---
+
+## 7. 如何使用这个仓库
+
+建议不要“从头到尾顺序看”。
+
+更好的用法是按问题进入。
+
+### 场景 1：你现在的 Agent 经常忘事、做长任务漂移
+优先看：
+- Context / Memory & Working State
+- Foundations
+
+### 场景 2：你已经能跑，但总感觉结果不稳定
+优先看：
+- Evals & Observability
+- Constraints / Guardrails & Safe Autonomy
+
+### 场景 3：你想给团队建立统一 Agent 项目规范
+优先看：
+- Specs / Agent Files & Workflow Design
+- Foundations
+
+### 场景 4：你想做自己的 runtime / workflow 系统
+优先看：
+- Runtimes, Harnesses & Reference Implementations
+- Specs / Workflow Design
+- Evals
+
+### 场景 5：你想建立可对照、可复现的实验基线
+优先看：
+- Benchmarks
+- Evals & Observability
+
+---
+
+## 8. 它和 TCD 的关系
+
+这个仓库和 TCD 的关系，不应该是“平行存在”，而应该是上下游关系。
+
+### 8.1 这个仓库负责输入
+它负责：
+- 聚合高质量外部文章；
+- 追踪 harness engineering 的关键问题域；
+- 维护一张研究地图；
+- 帮我们快速找到值得吸收的方法论。
+
+### 8.2 TCD 负责转译和落地
+TCD 负责把这些内容转成：
+- 模板
+- 标准
+- 工作流
+- 验收规则
+- benchmark adapter
+- 编排系统
+
+也就是说：
+
+> 这个仓库回答“别人怎么做”，TCD 回答“我们怎么落地成自己的系统”。
+
+### 8.3 已有的融合方案文档
+如果你关心的不是“这仓库是什么”，而是：
+- 哪些东西应该融合进 TCD；
+- 哪些方向最值得做成自己的资产；
+- 落地顺序应该怎么排；
+
+请直接看：
+
+- [TCD × Harness Engineering 深度融合方案](./TCD_FUSION_PLAN.md)
+
+---
+
+## 9. 推荐的阅读顺序
+
+如果你第一次进入这个仓库，建议按下面顺序看：
+
+### 路线 A：理解概念
+1. Foundations
+2. Context / Memory
+3. Guardrails
+
+### 路线 B：面向工程落地
+1. Specs / Agent Files / Workflow Design
+2. Evals & Observability
+3. Runtimes / Harnesses
+
+### 路线 C：面向实验和对照
+1. Evals & Observability
+2. Benchmarks
+3. Runtimes / Reference Implementations
+
+### 路线 D：面向 TCD 融合
+1. 先看本文件
+2. 再看 `README.md`
+3. 再看 `TCD_FUSION_PLAN.md`
+
+---
+
+## 10. 后续建议怎么扩展
+
+如果这个仓库后续要继续演进，建议不是只加链接，而是逐步增加下面几类内容：
+
+### 10.1 中文导读层
+不是翻译所有文章，而是做高质量中文导读和提炼，让团队快速判断哪些值得深读。
+
+### 10.2 模板抽取层
+把文章和案例中的高价值结构，抽成：
+- AGENTS 模板
+- init/check 模板
+- handoff 模板
+- eval schema 模板
+
+### 10.3 标准化层
+沉淀成：
+- TCD Agent Standard Kit
+- 统一字段结构
+- 统一 workflow 节点语义
+- 统一验收出口
+
+### 10.4 benchmark adapter 层
+把 benchmark 从“收录链接”升级成“可接、可跑、可对照”。
+
+---
+
+## 11. 最终定位
+
+这个仓库最合理的定位不是：
+
+> “一个 AI Agent 资料收藏夹”
+
+而是：
+
+> **一个面向 TCD 与工程落地的 Harness Engineering 研究地图。**
+
+它的使命不是“告诉你世界上有哪些链接”，而是：
+- 帮你快速找到高信号方法论；
+- 帮你理解 Agent 稳定性的关键问题；
+- 为 TCD 和后续系统建设提供上游知识输入；
+- 为模板、标准、工作流、验收层、实验层提供研究来源。
+
+如果后面继续按这个方向推进，它就会从一个资料仓，变成一个真正有战略价值的上游研究入口。
+
+---
+
+## 12. 相关文档
+
+- 英文主文档：[README.md](./README.md)
+- TCD 融合方案：[TCD_FUSION_PLAN.md](./TCD_FUSION_PLAN.md)
+
+
+
+---
+
+## 英文版文档
+
+- [README.en.md](./README.en.md)
+- [TCD × Harness Engineering 深度融合方案](./TCD_FUSION_PLAN.md)
